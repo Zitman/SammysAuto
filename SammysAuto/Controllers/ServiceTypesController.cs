@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SammysAuto.Data;
 using SammysAuto.Models;
 
@@ -41,6 +42,19 @@ namespace SammysAuto.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
+
+            return View(serviceType);
+        }
+
+        //Details : ServiceTypes/Details/1
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+                return NotFound();
+
+            var serviceType = await _db.ServiceTypes.SingleOrDefaultAsync(m => m.Id == id);
+            if (serviceType == null)
+                return NotFound();
 
             return View(serviceType);
         }
