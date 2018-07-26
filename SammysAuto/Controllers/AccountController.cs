@@ -10,9 +10,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using SammysAuto.Data;
 using SammysAuto.Models;
 using SammysAuto.Models.AccountViewModels;
 using SammysAuto.Services;
+using SammysAuto.Utility;
 
 namespace SammysAuto.Controllers
 {
@@ -22,19 +24,25 @@ namespace SammysAuto.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private ApplicationDbContext _db;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
+            RoleManager<IdentityRole> roleManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger,
+            ApplicationDbContext db)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+            _roleManager = roleManager;
+            _db = db;
         }
 
         [TempData]
@@ -220,10 +228,27 @@ namespace SammysAuto.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser
+                    {
+                        FirstName = model.FirstName,
+                        LastName = model.LastName,
+                        Address = model.Address,
+                        City = model.City,
+                        PostCode = model.PostCode,
+                        PhoneNumber = model.PhoneNumber,
+                        UserName = model.Email,
+                        Email = model.Email
+                    };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    if (!await _roleManager.RoleExistsAsync(StaticDetails.AdminEndUser))
+                        await _roleManager.CreateAsync(new IdentityRole(StaticDetails.AdminEndUser));
+
+                    if (!await _roleManager.RoleExistsAsync(StaticDetails.CustomerEndUser))
+                        await _roleManager.CreateAsync(new IdentityRole(StaticDetails.CustomerEndUser));
+
+                    await _userManager.AddToRoleAsync(user, StaticDetails.AdminEndUser);
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
