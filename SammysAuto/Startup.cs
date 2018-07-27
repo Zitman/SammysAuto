@@ -27,7 +27,7 @@ namespace SammysAuto
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DesktopConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("LaptopConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
