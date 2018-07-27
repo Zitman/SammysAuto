@@ -15,6 +15,7 @@ namespace SammysAuto.Models
         public string Text { get; set; }
 
         public int? ServiceId { get; set; }
+        public string CustomerId { get; set; }
 
         public string ActionParameters
         {
@@ -22,9 +23,10 @@ namespace SammysAuto.Models
             {
                 var param = new StringBuilder(@"/");
                 if (ServiceId != 0 && ServiceId != null)
-                {
                     param.Append(string.Format("{0}", ServiceId));
-                }
+
+                if (!string.IsNullOrEmpty(CustomerId))
+                    param.Append(String.Format("{0}", CustomerId));
 
                 return param.ToString().Substring(0, param.Length);
             }

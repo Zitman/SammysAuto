@@ -19,8 +19,8 @@
                 <div class="col-sm-12 text-right">
                     <b>Search: </b>
                     <label class="radio-inline">@Html.RadioButton("option", "name")Name</label>
-                    <label class="radio-inline">@Html.RadioButton("option", "email")Name</label>
-                    <label class="radio-inline">@Html.RadioButton("option", "phone")Name</label>
+                    <label class="radio-inline">@Html.RadioButton("option", "email")Email</label>
+                    <label class="radio-inline">@Html.RadioButton("option", "phone")Phone</label>
                 </div>
                 <div class="row">
                     <div class="pull-right">
@@ -73,11 +73,11 @@
                     </td>
                     <td>
                         <a asp-controller="cars" asp-action="Index" asp-route-userId="@user.Id">
-                            <img src="~/images/car.png" width="40" />&nbsp; View cars
+                            <img src="~/images/car.png" width="40"/>&nbsp; View cars
                         </a>
                     </td>
                     <td>
-                        EDIT | DELETE | DETAILS
+                        @Html.Partial("_TableButtonPartial", new IndividualButtonPartial {CustomerId = user.Id});
                     </td>
                 </tr>
             }
