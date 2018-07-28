@@ -35,7 +35,7 @@ namespace SammysAuto.Controllers
             return View(users);
         }
 
-        //GET details
+        //GET Details\1
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -49,6 +49,73 @@ namespace SammysAuto.Controllers
             return View(user);
 
 
+        }
+
+        //GET Edit\1
+        public async Task<IActionResult> Edit(string id)
+        {
+            if (id == null)
+                return NotFound();
+
+            var user = await _db.Users.SingleOrDefaultAsync(u => u.Id == id);
+
+            if (user == null)
+                return NotFound();
+
+            return View(user);
+
+
+        }
+
+        //POST : Edit/1
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(ApplicationUser user)
+        {
+            if (!ModelState.IsValid)
+                return View(user);
+
+            var userinDb = await _db.Users.SingleOrDefaultAsync(u => u.Id == user.Id);
+            if (user == null)
+                return NotFound();
+
+            userinDb.FirstName = user.FirstName;
+            userinDb.LastName = user.LastName;
+            userinDb.PhoneNumber = user.PhoneNumber;
+            userinDb.Address = user.Address;
+            userinDb.City = user.City;
+            userinDb.PostCode = user.PostCode;
+
+            _db.Update(userinDb);
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        //GET : Delete/1
+        public async Task<IActionResult> Delete(string id)
+        {
+            if (id == null)
+                return NotFound();
+
+            var user = await _db.Users.SingleOrDefaultAsync(u => u.Id == id);
+            if (user== null)
+                return NotFound();
+
+            return View(user);
+        }
+
+        [HttpPost, ActionName("Delete")] // This allows the function to be called something other than Delete, as it is called that in the above function with the same signature
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RemoveUser(string id)
+        {
+            var userInDb = await _db.Users.SingleOrDefaultAsync(u => u.Id == id);
+
+            _db.Users.Remove(userInDb);
+
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
 
         protected override void Dispose(bool disposing)

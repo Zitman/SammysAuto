@@ -1,13 +1,17 @@
 ﻿@model ApplicationUser
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Edit";
 }
+
 <br />
-<h2>User details</h2>
+<h2>Edit user</h2>
 <hr />
 
-<div class="form-border">
-    <fieldset disabled="">
+<form asp-action="Edit">
+
+    <div class="form-border">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <input type="hidden" asp-for="Id"/>
         <div class="form-group">
             <div class="row">
                 <div class="col-sm-2">
@@ -17,6 +21,7 @@
                     <input asp-for="FirstName" class="form-control" />
                 </div>
             </div>
+            <span asp-validation-for="FirstName" class="text-danger"></span>
         </div>
         <div class="form-group">
             <div class="row">
@@ -27,6 +32,7 @@
                     <input asp-for="LastName" class="form-control" />
                 </div>
             </div>
+            <span asp-validation-for="LastName" class="text-danger"></span>
         </div>
         <div class="form-group">
             <div class="row">
@@ -37,6 +43,7 @@
                     <input asp-for="Email" class="form-control" />
                 </div>
             </div>
+            <span asp-validation-for="Email" class="text-danger"></span>
         </div>
         <div class="form-group">
             <div class="row">
@@ -47,6 +54,7 @@
                     <input asp-for="PhoneNumber" class="form-control" />
                 </div>
             </div>
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
         </div>
         <div class="form-group">
             <div class="row">
@@ -57,6 +65,7 @@
                     <input asp-for="Address" class="form-control" />
                 </div>
             </div>
+            <span asp-validation-for="Address" class="text-danger"></span>
         </div>
         <div class="form-group">
             <div class="row">
@@ -67,12 +76,12 @@
                     <input asp-for="PostCode" class="form-control" />
                 </div>
             </div>
+            <span asp-validation-for="PostCode" class="text-danger"></span>
         </div>
-    </fieldset>
-    <br />
-    <div class="form-group">
-        <a asp-action="Edit" asp-route-id=@Model.Id class="btn btn-sm btn-primary">Edit</a>
-        <a asp-action="Delete" asp-route-id=@Model.Id class="btn btn-sm btn-danger">Delete</a>
-        <a asp-action="Index" asp-controller="Users" class="btn btn-sm btn-success">Back to list</a>
+        <br />
+        <div class="form-group">
+            <input type="submit" value="Update" class="btn btn-sm btn-primary" />
+            <a asp-action="Index" asp-controller="Users" class="btn btn-sm btn-success">Back to list</a>
+        </div>
     </div>
-</div>
+</form> 
