@@ -1,0 +1,119 @@
+﻿@model SammysAuto.ViewModels.CarAndCustomerViewModel
+@using SammysAuto.Utility
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<br/>
+<h2>Customera cars</h2>
+<hr/>
+<div class="row" style="padding-bottom: 80px">
+    <div class="col-sm-6" style="padding-bottom: 80px">
+        <a asp-action="Create" asp-route-userId="@Model.UserObj.Id" class="btn btn-primary" style="width: 150px;">Add new car</a>
+    </div>
+    <div class="col-sm-6">
+        <div class="row">
+            <div class="col-sm-4">
+                <label asp-for="UserObj.FirstName" class="control-label"></label>
+            </div>
+            <div class="col-sm-8" style="padding-bottom: 5px">
+                <input asp-for="UserObj.FirstName" disabled class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <label asp-for="UserObj.LastName" class="control-label"></label>
+            </div>
+            <div class="col-sm-8" style="padding-bottom: 5px">
+                <input asp-for="UserObj.LastName" disabled class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <label asp-for="UserObj.PhoneNumber" class="control-label"></label>
+            </div>
+            <div class="col-sm-8" style="padding-bottom: 5px">
+                <input asp-for="UserObj.PhoneNumber" disabled class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <label asp-for="UserObj.Email" class="control-label"></label>
+            </div>
+            <div class="col-sm-8" style="padding-bottom: 5px">
+                <input asp-for="UserObj.Email" disabled class="form-control">
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (!Model.Cars.Any())
+{
+    <div class="text-primary form-border">This customer has no cars registered</div>
+}
+else
+{
+    <div class="form-control">
+        <table class="table table-condensed table-hover">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(m => m.Cars.FirstOrDefault().VIN)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.Cars.FirstOrDefault().Make)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.Cars.FirstOrDefault().Model)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.Cars.FirstOrDefault().Style)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.Cars.FirstOrDefault().Colour)
+                </th>
+                <th></th>
+                <th></th>
+            </tr>
+            
+            @foreach (var car in Model.Cars)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(m => car.VIN)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => car.Make)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => car.Model)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => car.Style)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => car.Colour)
+                </td>
+                @if (User.IsInRole(StaticDetails.CustomerEndUser))
+                {
+                    <td style="width: 100%">
+                        <a class="btn btn-primary btn-sm" asp-controller="Services" asp-action="Index" asp-route-carId="car.Id"></a>
+                        <span class="glyphicon glyphicon-wrench"> &nbsp; Service history</span>
+                    </td>
+                }
+                else
+                {
+                    <td style="width: 100%">
+                        <a class="btn btn-success btn-sm" asp-controller="Services" asp-action="Index" asp-route-carId="car.Id"></a>
+                        <span class="glyphicon glyphicon-plus"> &nbsp; New service</span>
+                    </td>
+                }
+                <td>
+                    EDIT | DELETE | DETAILS
+                </td>
+            </tr>
+            }
+        </table>
+    </div>
+}
+
