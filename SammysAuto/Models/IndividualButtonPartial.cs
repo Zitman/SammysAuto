@@ -16,6 +16,7 @@ namespace SammysAuto.Models
 
         public int? ServiceId { get; set; }
         public string CustomerId { get; set; }
+        public int? CarId { get; set; }
 
         public string ActionParameters
         {
@@ -27,6 +28,9 @@ namespace SammysAuto.Models
 
                 if (!string.IsNullOrEmpty(CustomerId))
                     param.Append(String.Format("{0}", CustomerId));
+
+                if (CarId != 0 && CarId != null)
+                    param.Append(string.Format("{0}", CarId));
 
                 return param.ToString().Substring(0, param.Length);
             }

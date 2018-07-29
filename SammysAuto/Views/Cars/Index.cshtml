@@ -54,7 +54,7 @@
 }
 else
 {
-    <div class="form-control">
+    <div class="form-border">
         <table class="table table-condensed table-hover">
             <tr>
                 <th>
@@ -96,20 +96,22 @@ else
                 </td>
                 @if (User.IsInRole(StaticDetails.CustomerEndUser))
                 {
-                    <td style="width: 100%">
-                        <a class="btn btn-primary btn-sm" asp-controller="Services" asp-action="Index" asp-route-carId="car.Id"></a>
-                        <span class="glyphicon glyphicon-wrench"> &nbsp; Service history</span>
-                    </td>
+                <td style="width: 100px">
+                    <a class="btn btn-primary btn-sm" asp-controller="Services" asp-action="Index" asp-route-carId="car.Id">
+                        <span class="glyphicon glyphicon-wrench"> </span>&nbsp; Service history
+                    </a>
+                </td>
                 }
                 else
                 {
-                    <td style="width: 100%">
-                        <a class="btn btn-success btn-sm" asp-controller="Services" asp-action="Index" asp-route-carId="car.Id"></a>
-                        <span class="glyphicon glyphicon-plus"> &nbsp; New service</span>
-                    </td>
+                <td style="width: 100px">
+                    <a class="btn btn-success btn-sm" asp-controller="Services" asp-action="Create" asp-route-carId="car.Id">
+                        <span class="glyphicon glyphicon-plus-sign"> </span>&nbsp; New service
+                    </a>
+                </td>
                 }
                 <td>
-                    EDIT | DELETE | DETAILS
+                    @Html.Partial("_TableButtonPartial", new IndividualButtonPartial {CarId = car.Id })
                 </td>
             </tr>
             }
