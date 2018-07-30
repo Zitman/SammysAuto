@@ -1,0 +1,48 @@
+﻿@model IEnumerable<SammysAuto.Models.ServiceType>
+@{
+    ViewData["Title"] = "Index";
+}
+
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#table_id').DataTable();
+        });
+    </script>
+}
+
+
+<br />
+<h2>Manage service types</h2>
+<hr />
+
+<div class="form-border">
+    <p>
+        <a class="btn btn-sm btn-primary" asp-action="Create">Create new</a>
+    </p>
+    <br />
+
+    <table table id="table_id" class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(m => m.Name)
+                </th>
+                <th>3</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(m => item.Name)
+                    </td>
+                    <td>
+                        @Html.Partial("_TableButtonPartial", new IndividualButtonPartial { ServiceId = item.Id })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

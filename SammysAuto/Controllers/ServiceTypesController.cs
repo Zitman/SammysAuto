@@ -24,6 +24,12 @@ namespace SammysAuto.Controllers
             return View(_db.ServiceTypes.ToList());
         }
 
+        //GET : ServiceTypes
+        public IActionResult Index2()
+        {
+            return View(_db.ServiceTypes.ToList());
+        }
+
         //GET : ServiceTypes/Create
         public IActionResult Create()
         {
